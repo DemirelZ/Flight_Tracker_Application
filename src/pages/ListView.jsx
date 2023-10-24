@@ -6,28 +6,69 @@ import ReactPaginate from "react-paginate";
 const ListView = ({ openModal }) => {
   const state = useSelector((store) => store);
 
-  const [itemOffset, setItemOffset] = useState(10);
+  // console.log(state.flights);
 
-  // sayfa başına eleman sayısı
+  const [itemOffset, setItemOffset] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
+
   const itemsPerPage = 10;
 
-  // gösterilecek son elemanı tespi eder
   const endOffset = itemOffset + itemsPerPage;
-  // gösterlieck elemanları diziden alıyor
+
+  const filteredFlights = state?.flights.filter((fly) =>
+    fly.code.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const currentItems = state?.flights.slice(itemOffset, endOffset);
-  // toplam kaç sayfa hesaplar
+
   const pageCount = Math.ceil(state?.flights.length / itemsPerPage);
 
-  // sayfa değiştiğinde çalışır
   const handlePageClick = (event) => {
-    // gösterileck yeni elemaları hesaplar
     const newOffset = (event.selected * itemsPerPage) % state?.flights.length;
-    //  state'i günceller
+
     setItemOffset(newOffset);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchTerm(e.target[0].value);
+    setIsSearch(true);
+    setItemOffset(0);
   };
 
   return (
     <div className="p-4">
+      {/* <div>
+        <form className="form-inline">
+          <input
+            className="form-control mr-2"
+            type="search"
+            onSubmit={handleSearch}
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button className="btn btn-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+      </div> */}
+
+      <div className="w-25 mt-4 mx-auto ">
+        <form className="d-flex">
+          <input
+            className="form-control mr-2"
+            type="search"
+            onSubmit={handleSearch}
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button className="btn btn-success" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
+
       <table className="table table-dark table-hover mt-5">
         <thead>
           <tr>
@@ -38,7 +79,38 @@ const ListView = ({ openModal }) => {
             <th></th>
           </tr>
         </thead>
-        <tbody>
+
+        {isSearch ? (
+          <tbody>
+            {filteredFlights.map((i) => (
+              <tr>
+                <td>{i.id}</td>
+                <td>{i.code}</td>
+                <td>{i.lat}</td>
+                <td>{i.lng}</td>
+                <td>
+                  <button onClick={() => openModal(i.id)}>Detail</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            {currentItems.map((fly) => (
+              <tr>
+                <td>{fly.id}</td>
+                <td>{fly.code}</td>
+                <td>{fly.lat}</td>
+                <td>{fly.lng}</td>
+                <td>
+                  <button onClick={() => openModal(fly.id)}>Detail</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
+
+        {/* <tbody>
           {currentItems.map((fly) => (
             <tr>
               <td>{fly.id}</td>
@@ -50,7 +122,7 @@ const ListView = ({ openModal }) => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody> */}
       </table>
 
       <ReactPaginate
