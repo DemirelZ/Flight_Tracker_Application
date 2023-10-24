@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { options2 } from "../constants";
-import { useDispatch } from "react-redux";
-import { setRoute } from "../redux/slices/flightSlice";
+// import { useDispatch } from "react-redux";
+// import { setRoute } from "../redux/slices/flightSlice";
 
 const DetailModal = ({ closeModel, detailId }) => {
   const [d, setDetail] = useState(null);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     setDetail(null);
@@ -17,10 +17,10 @@ const DetailModal = ({ closeModel, detailId }) => {
       )
       .then((res) => {
         setDetail(res.data);
-        dispatch(setRoute(res.data.trail));
+        // dispatch(setRoute(res.data.trail));
       });
   }, [detailId]);
-  console.log(d);
+  // console.log(d);
   return (
     <div className="detail-outer">
       <div className="detail-inner">
