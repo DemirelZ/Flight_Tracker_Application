@@ -16,10 +16,6 @@ const ListView = ({ openModal }) => {
 
   const endOffset = itemOffset + itemsPerPage;
 
-  const filteredFlights = state?.flights.filter((fly) =>
-    fly.code.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const currentItems = state?.flights.slice(itemOffset, endOffset);
 
   const pageCount = Math.ceil(state?.flights.length / itemsPerPage);
@@ -33,33 +29,25 @@ const ListView = ({ openModal }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchTerm(e.target[0].value);
-    setIsSearch(true);
+
+    const filteredFlights = state?.flights.filter((fly) =>
+      fly.code.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (filteredFlights > 0) {
+      setIsSearch(true);
+    }
+
     setItemOffset(0);
   };
 
   return (
     <div className="p-4">
-      {/* <div>
-        <form className="form-inline">
-          <input
-            className="form-control mr-2"
-            type="search"
-            onSubmit={handleSearch}
-            placeholder="Search"
-            aria-label="Search"
-          />
-          <button className="btn btn-success my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form>
-      </div> */}
-
       <div className="w-25 mt-4 mx-auto ">
-        <form className="d-flex">
+        <form onSubmit={handleSearch} className="d-flex">
           <input
-            className="form-control mr-2"
+            className="form-control mr-2 bg-dark text-white "
             type="search"
-            onSubmit={handleSearch}
             placeholder="Search"
             aria-label="Search"
           />
@@ -83,7 +71,7 @@ const ListView = ({ openModal }) => {
         {isSearch ? (
           <tbody>
             {filteredFlights.map((i) => (
-              <tr>
+              <tr key={i.id}>
                 <td>{i.id}</td>
                 <td>{i.code}</td>
                 <td>{i.lat}</td>
@@ -97,7 +85,7 @@ const ListView = ({ openModal }) => {
         ) : (
           <tbody>
             {currentItems.map((fly) => (
-              <tr>
+              <tr key={fly.id}>
                 <td>{fly.id}</td>
                 <td>{fly.code}</td>
                 <td>{fly.lat}</td>
