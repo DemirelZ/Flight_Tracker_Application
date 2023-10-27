@@ -19,3 +19,5 @@ API: https://rapidapi.com/apidojo/api/flight-radar1
 <br/>
 
 <h2> Find the screen gif below </h2>
+
+![](/public/ftracker.gif)

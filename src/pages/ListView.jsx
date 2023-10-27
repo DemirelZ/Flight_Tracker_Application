@@ -36,7 +36,11 @@ const ListView = ({ openModal }) => {
     );
     setFilteredFlights(newFilteredFlights);
 
-    console.log("newFilteredFlights", newFilteredFlights);
+    // console.log("state?.flights.", state?.flights);
+
+    // console.log("searchTerm", searchTerm);
+
+    // console.log("newFilteredFlights", newFilteredFlights);
 
     if (newFilteredFlights.length > 0) {
       setIsSearch(true);
