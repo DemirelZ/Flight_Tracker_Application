@@ -11,6 +11,7 @@ const ListView = ({ openModal }) => {
   const [itemOffset, setItemOffset] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearch, setIsSearch] = useState(false);
+  const [filteredFlights, setFilteredFlights] = useState([]);
 
   const itemsPerPage = 10;
 
@@ -30,12 +31,17 @@ const ListView = ({ openModal }) => {
     e.preventDefault();
     setSearchTerm(e.target[0].value);
 
-    const filteredFlights = state?.flights.filter((fly) =>
-      fly.code.toLowerCase().includes(searchTerm.toLowerCase())
+    const newFilteredFlights = state?.flights.filter(
+      (fly) => fly.code === searchTerm
     );
+    setFilteredFlights(newFilteredFlights);
 
-    if (filteredFlights > 0) {
+    console.log("newFilteredFlights", newFilteredFlights);
+
+    if (newFilteredFlights.length > 0) {
       setIsSearch(true);
+    } else {
+      setIsSearch(false);
     }
 
     setItemOffset(0);
